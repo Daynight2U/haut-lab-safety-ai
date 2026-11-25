@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         实验室安全准入 · AI 自动答题
+// @name         HAUT-河南工业大学实验室安全知识大赛题库AI自刷
 // @namespace    labs.auto.answer
 // @version      3.0
-// @description  实验室安全练习/考核系统的自动答题助手：AI 答题 + 本地题库自学习
+// @description  HAUT 实验室安全知识大赛题库 AI 自刷：多模型作答 + 本地题库自学习，支持 DeepSeek/Kimi/通义/智谱/混元/豆包/硅基流动/MiniMax
 // @match        https://labs.haut.edu.cn/*
 // @grant        GM_xmlhttpRequest
 // @grant        unsafeWindow
@@ -995,7 +995,7 @@ confidence 用 0 到 1 的小数表示你的把握程度。`;
 </style>
 <div class="wrap">
   <div class="panel hid" id="panel">
-    <div class="hd"><span class="dot" id="dot"></span><span>实验室安全 · 自动答题</span><span class="x" id="close">×</span></div>
+    <div class="hd"><span class="dot" id="dot"></span><span>HAUT 实验室安全 · AI 自刷</span><span class="x" id="close">×</span></div>
     <div class="bd">
       <div class="stat">
         <div><b id="n-done">0</b><i>已答</i></div>
