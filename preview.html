@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>面板预览</title>
+<style>
+  body{margin:0;font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:#f5f6f8;color:#333}
+  .fake{max-width:820px;margin:40px auto;padding:28px 32px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .fake h2{margin:0 0 6px;font-size:18px}
+  .fake p{color:#888;font-size:13px;margin:4px 0 18px}
+  .q{font-size:15px;margin:18px 0 12px}
+  .opt{display:flex;align-items:center;gap:10px;padding:10px 0;color:#555;font-size:14px}
+  .box{width:16px;height:16px;border:1px solid #c6cbd6;border-radius:3px;background:#fff}
+  .box.on{background:#3b82f6;border-color:#3b82f6;position:relative}
+  .box.on:after{content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .btns2{display:flex;gap:10px;margin-top:20px}
+  .btns2 span{padding:8px 18px;border:1px solid #d8dde6;border-radius:6px;font-size:13px;color:#555}
+
+  /* ==== 以下是脚本里的面板样式 ==== */
+  .wrap{position:fixed;right:18px;bottom:18px;z-index:9}
+  .ball{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;
+        display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;
+        box-shadow:0 6px 20px rgba(99,102,241,.45);user-select:none;transition:transform .15s}
+  .ball:hover{transform:scale(1.07)}
+  .panel{position:absolute;right:0;bottom:58px;width:292px;background:#15171c;color:#e6e8ee;
+         border:1px solid #2a2e37;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.55);
+         overflow:hidden;font-size:12px}
+  .hd{display:flex;align-items:center;gap:7px;padding:10px 12px;background:#1c1f26;font-weight:600;font-size:12.5px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#fbbf24;box-shadow:0 0 8px #fbbf24;flex:0 0 auto}
+  .x{margin-left:auto;cursor:pointer;color:#9aa0ad;font-size:16px;line-height:1}
+  .bd{padding:10px 12px 12px}
+  .stat{display:flex;gap:6px;margin-bottom:9px}
+  .stat>div{flex:1;background:#1b1e25;border:1px solid #262a33;border-radius:8px;padding:6px 0;text-align:center}
+  .stat b{display:block;font-size:15px;color:#c7b9ff;font-weight:700}
+  .stat i{font-style:normal;font-size:10px;color:#8b90a0}
+  .panel input{width:100%;background:#1b1e25;border:1px solid #2a2e37;color:#e6e8ee;border-radius:8px;
+        padding:7px 9px;font-size:11.5px;outline:none;margin-bottom:8px;box-sizing:border-box}
+  .ai{margin-bottom:8px;border:1px solid #262a33;border-radius:8px;padding:7px 8px;background:#171a20}
+  .aihd{display:flex;align-items:center;font-size:11px;color:#9aa0ad;margin-bottom:6px}
+  .aihd span{margin-left:auto;color:#7dd3fc;cursor:pointer;font-size:10.5px}
+  .ai input{margin-bottom:4px;font-size:10.5px;padding:5px 7px}
+  .ai input:last-child{margin-bottom:0}
+  .ai select{width:100%;background:#1b1e25;border:1px solid #2a2e37;color:#e6e8ee;border-radius:8px;
+             padding:6px 7px;font-size:10.5px;outline:none;margin-bottom:4px;cursor:pointer;box-sizing:border-box}
+  .rowline{display:flex;align-items:center;gap:6px;font-size:11px;color:#9aa0ad;margin-bottom:7px}
+  .rowline input{width:54px;margin:0;padding:4px 6px;text-align:center;font-size:11px}
+  .rowline .tip{font-size:10px;color:#6b7280;margin-left:auto}
+  .btns{display:flex;gap:7px;margin-bottom:8px}
+  .btns button{flex:1;border:0;border-radius:8px;padding:8px 0;font-size:12px;cursor:pointer;color:#fff;
+         background:linear-gradient(135deg,#6366f1,#a855f7);font-weight:600}
+  .btns button.g{background:#2a2e37;color:#c9cedb}
+  .mini{font-size:11px;color:#8b90a0;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .log{height:118px;overflow:auto;background:#101216;border:1px solid #23262e;border-radius:8px;
+       padding:6px 7px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;line-height:1.55;color:#9aa3b2}
+  .log div{word-break:break-all}
+  .ok{color:#4ade80}.warn{color:#fbbf24}.err{color:#f87171}.info{color:#7dd3fc}
+</style>
+</head>
+<body>
+
+<div class="fake">
+  <h2>2. 全国消防宣传日是每年的11月9日。</h2>
+  <p>已练习题数：6/20　已达时间：1分32秒</p>
+  <div class="q"></div>
+  <div class="opt"><span class="box on"></span>正确</div>
+  <div class="opt"><span class="box"></span>错误</div>
+  <div class="btns2"><span>上一题</span><span>下一题</span><span>提交</span></div>
+</div>
+
+<div class="wrap">
+  <div class="panel" id="panel">
+    <div class="hd"><span class="dot"></span><span>实验室安全 · 自动答题</span><span class="x">×</span></div>
+    <div class="bd">
+      <div class="stat">
+        <div><b>6</b><i>已答</i></div>
+        <div><b>6</b><i>题库</i></div>
+        <div><b>4</b><i>AI</i></div>
+        <div><b>0</b><i>靠猜</i></div>
+      </div>
+      <div class="ai">
+        <div class="aihd">AI 答题（OpenAI 兼容）<span>测试</span></div>
+        <select>
+          <option>DeepSeek</option>
+          <option>Kimi 月之暗面</option>
+          <option>阿里通义千问</option>
+          <option>智谱 GLM</option>
+          <option>腾讯混元</option>
+          <option>火山方舟 豆包</option>
+          <option>硅基流动</option>
+          <option>MiniMax</option>
+          <option>自定义</option>
+        </select>
+        <input value="https://api.deepseek.com/v1">
+        <input value="deepseek-chat">
+        <input value="sk-********************************">
+      </div>
+      <div class="rowline"><span>轮数</span><input value="3"><span class="tip">1–20</span></div>
+      <div class="btns"><button disabled>开始 3 轮</button><button class="g">停止</button></div>
+      <div class="btns"><button class="g">抓学校题库</button><button class="g">导出题库</button></div>
+      <div class="mini">运行中 · 第 1 轮 · 已答 6</div>
+      <div class="log" id="log">
+        <div class="info">[LQB] v2.1 已注入 · 右下角 ⚡ 打开面板</div>
+        <div class="info">[LQB] 已挂上接口嗅探：题目和答案会自动进题库</div>
+        <div class="info">[LQB] 第 1/3 轮开始</div>
+        <div class="ok">[LQB] AI 作答 → B（把握 0.95）</div>
+        <div class="ok">[LQB] AI 作答 → 正确（把握 0.98）</div>
+        <div class="warn">[LQB] 页面响应里捞到 20 题答案 → 题库共 20 题</div>
+      </div>
+    </div>
+  </div>
+  <div class="ball">⚡</div>
+</div>
+
+</body>
+</html>
