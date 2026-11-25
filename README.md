@@ -117,6 +117,7 @@ __LQB__.diag()      // 查看 cookie / storage 概况（只打印名字和长度
 
 ## 隐私
 
+- 脚本会 hook 页面的 `XMLHttpRequest` / `fetch`，读取**答题接口的响应**用于提取答案，解析全部在本地完成，不外发
 - API Key 存在浏览器 `localStorage`，不会随脚本分发
 - 只把「题干 + 选项」发给配置的 AI 服务商，不发送账号、Cookie 或页面其他内容
 - 无任何自建服务器、无统计上报
